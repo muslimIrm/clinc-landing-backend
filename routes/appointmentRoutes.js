@@ -29,7 +29,7 @@ router.post('/add', validateAppointment, authMiddlewareForAdd, asyncHandler(asyn
     const c1 = randomChars[Math.floor(Math.random() * randomChars.length)];
     const c2 = randomChars[Math.floor(Math.random() * randomChars.length)];
     const c3 = randomChars[Math.floor(Math.random() * randomChars.length)];
-    let userId = req.user.userId || null;
+    let userId = req.user?.userId || null;
     const generatedCode = `${c1}${age}${c2}${c3}`;
     if (!userId) {
         userId = v4();
@@ -97,6 +97,17 @@ router.get("/get", asyncHandler(async (req, res) => {
     });
 }));
 
+router.get("/my-appointments", authMiddleware, asyncHandler(async (req, res) => {
+    const userId = req.user.userId;
+    console.log(userId)
+    const appointments = await Appointment.find({ userId });
+
+    res.status(200).json({
+        success: true,
+        message: "تم جلب الحجوزات بنجاح",
+        data: appointments
+    });
+}));
 
 router.put("/update/:id", authMiddleware, asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -109,6 +120,7 @@ router.put("/update/:id", authMiddleware, asyncHandler(async (req, res) => {
             message: "لم يتم العثور على الحجز"
         });
     }
+    
     if (appointmentToUpdate.userId !== req.user.userId && req.user.role !== "admin") {
         return res.status(403).json({
             success: false,

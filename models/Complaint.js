@@ -17,7 +17,7 @@ const complaintSchema = new mongoose.Schema({
         required: [true, "الموضوع مطلوب"],
         trim: true,
     },
-    message: {
+    complaint: {
         type: String,
         required: [true, "الشكوى مطلوبة"],
         trim: true,
@@ -37,7 +37,7 @@ export const validateComplaint = [
     body('name').notEmpty().withMessage('الاسم مطلوب'),
     body('phone').notEmpty().withMessage('رقم الهاتف مطلوب'),
     body('subject').notEmpty().withMessage('الموضوع مطلوب'),
-    body('message').notEmpty().withMessage('الشكوى مطلوبة'),
+    body('complaint').notEmpty().withMessage('الشكوى مطلوبة'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

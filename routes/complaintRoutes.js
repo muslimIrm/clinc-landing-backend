@@ -6,19 +6,19 @@ const router = express.Router();
 
 // User: Submit a complaint
 router.post('/add', validateComplaint, asyncHandler(async (req, res) => {
-    const { name, phone, subject, message } = req.body;
+    const { name, phone, subject, complaint } = req.body;
 
-    const complaint = await Complaint.create({
+    const NewComplaint = await Complaint.create({
         name,
         phone,
         subject,
-        message
+        complaint
     });
 
     res.status(201).json({
         success: true,
         message: "تم إرسال الشكوى بنجاح",
-        data: complaint
+        data: NewComplaint
     });
 }));
 

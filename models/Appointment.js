@@ -47,7 +47,13 @@ const appointmentSchema = new mongoose.Schema({
 export const Appointment = mongoose.model("Appointment", appointmentSchema);
 
 export const validateAppointment = [
-    body('name').notEmpty().withMessage('الاسم مطلوب'),
+    body('name').trim().notEmpty().withMessage('الاسم مطلوب').custom(value => {
+        const word = value.split(/\s+/).filter(w=> w.length > 0);
+        if(word.length < 3) {
+            throw new Error('يجب ان تدخل الاسم الثلاثي!');
+        }
+        return true;
+    }),
     body('phone').isMobilePhone().withMessage('يرجى إدخال رقم هاتف صحيح'),
     body('appointmentDate').isISO8601().withMessage('التاريخ غير صحيح'),
     body('age').isInt({ min: 1 }).withMessage('العمر يجب أن يكون رقماً صحيحاً'),
