@@ -16,7 +16,7 @@ const app = express();
 
 // middlewares الأساسية
 app.use(cors({
-  origin: "https://clinc-landing.vercel.app/",
+  origin: "https://clinc-landing.vercel.app",
   credentials: true
 }));
 app.use(express.json());
